@@ -42,6 +42,7 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
+        'js-debug-adapter',
       },
     }
 
@@ -92,5 +93,34 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
+
+    dap.adapters['pwa-node'] = {
+      type = 'server',
+      host = 'localhost',
+      port = '${port}',
+      executable = {
+        command = 'node',
+        args = { vim.fn.stdpath 'data' .. '/mason/packages/js-debug-adapter/js-debug/src/dapDebugServer.js', '${port}' },
+      },
+    }
+
+    dap.configurations.javascript = {
+      {
+        type = 'pwa-node',
+        request = 'launch',
+        name = 'Launch file',
+        program = '${file}',
+        cwd = '${workspaceFolder}',
+      },
+    }
+
+    -- Debug keymap expression eval
+    vim.keymap.set('n', '<leader>dh', function()
+      require('dap.ui.widgets').hover()
+    end, { desc = '[D]ebug: [H]over' })
+
+    vim.keymap.set('v', '<leader>dh', function()
+      require('dap.ui.widgets').visual_hover()
+    end, { desc = '[D]ebug: [H]over' })
   end,
 }
