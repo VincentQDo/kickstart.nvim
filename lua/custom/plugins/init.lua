@@ -3,5 +3,5 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-  vim.keymap.set('i', '<C-j>', '<Esc>', { desc = 'Switch to [N]ormal mode' }),
+  vim.keymap.set('i', 'jj', '<Esc>', { desc = 'Switch to [N]ormal mode' }),
 }
